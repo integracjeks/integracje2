@@ -36,7 +36,7 @@ namespace EntityHelper
                 {
                     var list = db.DbLogs.ToList();
                     var logCountList = from log in list
-                                       where (log.data + TimeSpan.FromMinutes(10)).CompareTo(dateTime) == 1 && log.ip.Trim() == info
+                                       where (log.data + TimeSpan.FromMinutes(1)).CompareTo(dateTime) == 1 && log.ip.Trim() == info
                                        select log;
 
                     return logCountList.Count();
