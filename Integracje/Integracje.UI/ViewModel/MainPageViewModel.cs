@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using YamlDotNet.Serialization;
@@ -131,6 +132,8 @@ namespace Integracje.UI.ViewModel
             {
                 OutputTextBox = Result.ErrorMessage;
             }
+            IsSaveButtonVisible = false;
+            MessageBox.Show(OutputTextBox);
         }
 
         private void AnalyzeIfNoError()
@@ -138,6 +141,8 @@ namespace Integracje.UI.ViewModel
             if (Result.EmptyResult)
             {
                 OutputTextBox = "Brak rekordów";
+                IsSaveButtonVisible = false;
+                MessageBox.Show(OutputTextBox);
             }
             else
             {
@@ -190,8 +195,7 @@ namespace Integracje.UI.ViewModel
             }
             catch
             {
-                //no code
-                //no problem
+                //
             }
         }
 
@@ -212,6 +216,7 @@ namespace Integracje.UI.ViewModel
             }
             catch (Exception e)
             {
+                MessageBox.Show(e.Message);
                 OutputTextBox = e.Message;
             }
         }
