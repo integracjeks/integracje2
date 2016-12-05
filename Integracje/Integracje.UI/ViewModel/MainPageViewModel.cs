@@ -9,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Reflection;
 using System.Windows.Input;
 using System.Xml.Serialization;
 using YamlDotNet.Serialization;
@@ -21,7 +20,6 @@ namespace Integracje.UI.ViewModel
     {
         #region Fields
 
-        private string file;
         private ICommand m_DownloadCommand;
         private bool m_IsSaveButtonVisible;
         private string m_OutputTextBox;
@@ -30,8 +28,6 @@ namespace Integracje.UI.ViewModel
         private ICommand m_SaveCommand;
         private SaveFileDialog m_SaveFileDialog;
         private Procedure m_SelectedProcedure;
-        private string name = "Result.xml";
-        private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         #endregion Fields
 
@@ -39,7 +35,6 @@ namespace Integracje.UI.ViewModel
 
         public MainPageViewModel()
         {
-            file = path + "\\Results\\" + name;
             Procedures = new ObservableCollection<Procedure>
             {
                 new Procedure {Name= "GetAllBooks",HasParameter=false},
@@ -53,7 +48,6 @@ namespace Integracje.UI.ViewModel
                 new Procedure {Name= "GetAllBooksWrittenByMen",HasParameter=false},
                 new Procedure {Name= "GetAllBooksWrittenByWomen",HasParameter=false}
             };
-            OutputTextBox = string.Empty;
         }
 
         #endregion Constructors
@@ -137,7 +131,6 @@ namespace Integracje.UI.ViewModel
             {
                 OutputTextBox = Result.ErrorMessage;
             }
-            DeleteFile();
         }
 
         private void AnalyzeIfNoError()
@@ -145,14 +138,12 @@ namespace Integracje.UI.ViewModel
             if (Result.EmptyResult)
             {
                 OutputTextBox = "Brak rekordów";
-                DeleteFile();
             }
             else
             {
                 OutputTextBox = Result.Xml;
                 CreateResultBooksList();
                 IsSaveButtonVisible = true;
-                // CreateXmlFile();
             }
         }
 
@@ -197,30 +188,11 @@ namespace Integracje.UI.ViewModel
                 var r = serializer.Deserialize(stringReader);
                 ResultBooks = r as List<Book>;
             }
-            catch { }
-        }
-
-        private void CreateXmlFile()
-        {
-            //try
-            //{
-            //    Directory.CreateDirectory(Path.GetDirectoryName(file));
-            //}
-            //catch { }
-            try
+            catch
             {
-                m_SaveFileDialog.ShowDialog();
+                //no code
+                //no problem
             }
-            catch { }
-        }
-
-        private void DeleteFile()
-        {
-            try
-            {
-                File.Delete(file);
-            }
-            catch { }
         }
 
         private void ExecuteSelectedProcedure()
@@ -281,14 +253,10 @@ namespace Integracje.UI.ViewModel
 
         private void SaveDocument(string fileName, SaveFormatName saveFormatName)
         {
-            string document = string.Empty;
+            string document;
 
             switch (saveFormatName)
             {
-                case SaveFormatName.XML:
-                    document = Result.Xml;
-                    break;
-
                 case SaveFormatName.JSON:
                     document = GetJsonFromResult();
                     break;

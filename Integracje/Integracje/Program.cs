@@ -9,7 +9,7 @@ namespace Integracje
 
         private static void Main(string[] args)
         {
-            var helper = new SQLHelper();
+            var helper = new SqlHelper();
             helper.CreateDatabase();
             Console.WriteLine("Database created");
 

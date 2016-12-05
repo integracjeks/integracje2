@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace Integracje.Helpers
 {
-    public class SQLHelper
+    public class SqlHelper
     {
         #region Fields
 
@@ -35,7 +35,7 @@ namespace Integracje.Helpers
 
         #region Constructors
 
-        public SQLHelper()
+        public SqlHelper()
         {
         }
 
@@ -58,14 +58,15 @@ namespace Integracje.Helpers
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(createQuery, conn);
                     cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
                 catch
                 {
+                    //
                 }
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public void InsertIntem(Book item)
         {
             using (var connection = GetConnection())
@@ -92,14 +93,15 @@ namespace Integracje.Helpers
                         "'" + item.original_lanuguage + "'",
                         item.translated_languages_quantity), connection);
                     cmd.ExecuteNonQuery();
-                    connection.Close();
                 }
                 catch
                 {
+                    //
                 }
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public void InsertTest()
         {
             using (SqlConnection conn = new SqlConnection(CONNECTION_STIRNG))
@@ -108,7 +110,6 @@ namespace Integracje.Helpers
                 SqlCommand cmd = new SqlCommand(string.Format(insertQuery, 1, "'title'", 324, 234, "'isbnumer'", "'genre'", "'$50'", "'imieautora'",
                     "'nazwiskoautroa'", 1, 4, "'mail'", "'hender'", "'en'", 5), conn);
                 cmd.ExecuteNonQuery();
-                conn.Close();
             }
             /*
           (<id, int,>
@@ -129,6 +130,7 @@ namespace Integracje.Helpers
          */
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public object SqlReturn(string sql)
         {
             using (SqlConnection conn = new SqlConnection(CONNECTION_STIRNG))

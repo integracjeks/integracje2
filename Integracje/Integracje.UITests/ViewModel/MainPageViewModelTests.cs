@@ -1,13 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Integracje.UI.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EntityHelper;
 using Integracje.UI.SrvBook;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
-using EntityHelper;
 using Procedure = Integracje.UI.SrvBook.Procedure;
 
 namespace Integracje.UI.ViewModel.Tests
@@ -15,6 +9,8 @@ namespace Integracje.UI.ViewModel.Tests
     [TestClass()]
     public class MainPageViewModelTests
     {
+        #region Methods
+
         [TestMethod()]
         public void MainPageViewModelTest()
         {
@@ -27,5 +23,7 @@ namespace Integracje.UI.ViewModel.Tests
             Assert.AreEqual(Result.EmptyResult, false);
             Assert.AreEqual(Result.WrongParameter, false);
         }
+
+        #endregion Methods
     }
 }
