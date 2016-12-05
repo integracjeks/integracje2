@@ -30,9 +30,7 @@ namespace Integracje.UI.ViewModel
         private ICommand m_SaveCommand;
         private SaveFileDialog m_SaveFileDialog;
         private Procedure m_SelectedProcedure;
-
         private string name = "Result.xml";
-
         private string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         #endregion Fields
