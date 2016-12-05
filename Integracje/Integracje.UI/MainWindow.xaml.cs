@@ -9,6 +9,8 @@ namespace Integracje.UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Constructors
+
         public MainWindow()
         {
             InitializeComponent();
@@ -17,9 +19,15 @@ namespace Integracje.UI
             frame.Navigate(new MainPage());
         }
 
+        #endregion Constructors
+
+        #region Methods
+
         public Frame GetFrame()
         {
             return _mainFrame;
         }
+
+        #endregion Methods
     }
 }

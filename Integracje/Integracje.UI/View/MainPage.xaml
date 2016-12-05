@@ -7,11 +7,6 @@
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1200">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-
         <Grid Margin="4">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="8">Wybierz procedurę</TextBlock>
@@ -31,12 +26,9 @@
                     <TextBox Margin="8" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding ParameterTextBox,Mode=TwoWay}" />
                 </Grid>
 
-                <Button Margin="8" Command="{Binding DownloadCommand}">Pobierz xml</Button>
+                <Button Margin="8" Command="{Binding DownloadCommand}">Pobierz dane</Button>
+                <Button Margin="8" Command="{Binding SaveCommand}" Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">Zapisz dane</Button>
             </StackPanel>
-        </Grid>
-
-        <Grid Margin="4" Grid.Column="1">
-            <TextBox  TextWrapping="Wrap"  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True" Text="{Binding OutputTextBox}" />
         </Grid>
     </Grid>
 </local:BasePage>
