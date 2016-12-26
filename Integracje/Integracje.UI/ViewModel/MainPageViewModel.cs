@@ -8,9 +8,11 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using System.Xml.Serialization;
 using YamlDotNet.Serialization;
 using Procedure = Integracje.UI.SrvBook.Procedure;
@@ -20,6 +22,8 @@ namespace Integracje.UI.ViewModel
     public class MainPageViewModel : BaseViewModel
     {
         #region Fields
+
+        private bool m_StyleXml;
 
         private ICommand m_DownloadCommand;
         private bool m_IsSaveButtonVisible;
@@ -115,6 +119,20 @@ namespace Integracje.UI.ViewModel
                 SetProperty(ref m_SelectedProcedure, value);
                 IsSaveButtonVisible = false;
                 ((DelegateCommand)DownloadCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        public bool StyleXml
+        {
+            get
+            {
+                return m_StyleXml;
+            }
+
+            set
+            {
+                SetProperty(ref m_StyleXml, value);
+                Debug.WriteLine($"---------- StyleXml: {StyleXml}");
             }
         }
 
@@ -275,11 +293,28 @@ namespace Integracje.UI.ViewModel
                     break;
 
                 default:
-                    document = Result.Xml;
+                    document = GetXmlFromResult();
                     break;
             }
 
             File.WriteAllText(fileName, document);
+        }
+
+        private string GetXmlFromResult()
+        {
+            if (StyleXml)
+            {
+                var doc = new XmlDocument();
+                doc.LoadXml(Result.Xml);
+                doc.AppendChild(doc.CreateProcessingInstruction(
+                    "xml-stylesheet",
+                    "type='text/css' href='Result.css'"));
+
+                var styledXml = doc.InnerXml;
+                return styledXml;
+
+            }
+            return Result.Xml;
         }
 
         private void Sfd_FileOk(object sender, System.ComponentModel.CancelEventArgs e)

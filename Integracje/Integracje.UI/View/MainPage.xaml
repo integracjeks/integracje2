@@ -13,7 +13,7 @@
                 <ComboBox Margin="8" SelectedItem="{Binding SelectedProcedure,Mode=TwoWay}" ItemsSource="{Binding Procedures}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="{Binding Name}"/>
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -27,7 +27,25 @@
                 </Grid>
 
                 <Button Margin="8" Command="{Binding DownloadCommand}">Pobierz dane</Button>
-                <Button Margin="8" Command="{Binding SaveCommand}" Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">Zapisz dane</Button>
+
+                <Grid Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="8" Command="{Binding SaveCommand}">Zapisz dane</Button>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding StyleXml,Mode=TwoWay,FallbackValue=false}" VerticalAlignment="Center">Styluj XML</CheckBox>
+                    </Grid>
+                    <Grid Grid.Row="1">
+
+                    </Grid>
+                </Grid>
+
             </StackPanel>
         </Grid>
     </Grid>

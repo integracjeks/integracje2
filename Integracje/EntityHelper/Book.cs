@@ -6,6 +6,7 @@ namespace EntityHelper
 #pragma warning disable S100 // Methods and properties should be named in camel case
     public partial class Book
     {
+
         #region Properties
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
@@ -58,6 +59,7 @@ namespace EntityHelper
         public int translated_languages_quantity { get; set; }
 
         #endregion Properties
+
     }
 #pragma warning restore S100 // Methods and properties should be named in camel case
 }
