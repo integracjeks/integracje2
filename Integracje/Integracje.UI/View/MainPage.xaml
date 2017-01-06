@@ -4,10 +4,12 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Integracje.UI.Base"
+      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1200">
+    
     <Grid>
-        <Grid Margin="4">
+        <Grid x:Name="MainGrid" Margin="4">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="8">Wybierz procedurę</TextBlock>
                 <ComboBox Margin="8" SelectedItem="{Binding SelectedProcedure,Mode=TwoWay}" ItemsSource="{Binding Procedures}">
@@ -47,6 +49,9 @@
                 </Grid>
 
             </StackPanel>
+        </Grid>
+        <Grid x:Name="LoadingGrid" Visibility="{Binding IsLoadingState,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}" Background="Black" Opacity="0.5">
+            <controls:ProgressRing Foreground="White" IsActive="{Binding IsLoadingState}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
     </Grid>
 </local:BasePage>

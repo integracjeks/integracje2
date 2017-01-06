@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
@@ -23,20 +24,6 @@ namespace Integracje.UI.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
-        #region Fields
-
-        private bool m_StyleXml;
-
-        private ICommand m_DownloadCommand;
-        private bool m_IsSaveButtonVisible;
-        private string m_OutputTextBox;
-        private string m_ParameterTextBox;
-        private ObservableCollection<Procedure> m_Procedures;
-        private ICommand m_SaveCommand;
-        private SaveFileDialog m_SaveFileDialog;
-        private Procedure m_SelectedProcedure;
-
-        #endregion Fields
 
         #region Constructors
 
@@ -98,9 +85,7 @@ namespace Integracje.UI.ViewModel
         }
 
         public ResultFromProcedure Result { get; set; }
-
         public List<Book> ResultBooks { get; set; }
-
         public ICommand SaveCommand
         {
             get
@@ -138,7 +123,31 @@ namespace Integracje.UI.ViewModel
             }
         }
 
+        public bool IsLoadingState
+        {
+            get { return m_IsLoadingState; }
+            set
+            {
+                SetProperty(ref m_IsLoadingState, value);
+            }
+        }
+
         #endregion Properties
+
+        #region Fields
+
+        private bool m_StyleXml;
+        private ICommand m_DownloadCommand;
+        private bool m_IsSaveButtonVisible;
+        private string m_OutputTextBox;
+        private string m_ParameterTextBox;
+        private ObservableCollection<Procedure> m_Procedures;
+        private ICommand m_SaveCommand;
+        private SaveFileDialog m_SaveFileDialog;
+        private Procedure m_SelectedProcedure;
+        private bool m_IsLoadingState;
+
+        #endregion Fields
 
         #region Methods
 
@@ -219,26 +228,29 @@ namespace Integracje.UI.ViewModel
             }
         }
 
-        private void ExecuteSelectedProcedure()
+        private async void ExecuteSelectedProcedure()
         {
+            IsLoadingState = true;
             IsSaveButtonVisible = false;
             ConfigureSaveFileDialog();
-            try
+            var task = Task.Factory.StartNew(() =>
             {
-                SelectedProcedure.Parameter = ParameterTextBox;
-
-                var ws = new BookService();
-                var resultJson = ws.GetResultFromProcedure(SelectedProcedure);
-
-                Result = JsonConvert.DeserializeObject<ResultFromProcedure>(resultJson);
-
-                AnalyzeResult();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                OutputTextBox = e.Message;
-            }
+                try
+                {
+                    SelectedProcedure.Parameter = ParameterTextBox;
+                    var ws = new BookService();
+                    var resultJson = ws.GetResultFromProcedure(SelectedProcedure);
+                    Result = JsonConvert.DeserializeObject<ResultFromProcedure>(resultJson);
+                    AnalyzeResult();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    OutputTextBox = e.Message;
+                }
+            });
+            await task;
+            IsLoadingState = false;
         }
 
         private string GetJsonFromResult()
@@ -301,7 +313,6 @@ namespace Integracje.UI.ViewModel
 
             File.WriteAllText(fileName, document);
         }
-
         private string GetXmlFromResult()
         {
             if (StyleXml)
@@ -350,5 +361,6 @@ namespace Integracje.UI.ViewModel
         }
 
         #endregion Methods
+
     }
 }
