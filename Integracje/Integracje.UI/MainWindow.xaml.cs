@@ -23,11 +23,13 @@ namespace Integracje.UI
 
         #endregion Constructors
 
-        #region Methods
+        #region Properties
 
         public Frame Frame { get { return _mainFrame; } }
 
-        #endregion Methods
+        #endregion Properties
+
+        #region Methods
 
         private void mainFrame_Navigating(object sender, System.Windows.Navigation.NavigatingCancelEventArgs e)
         {
@@ -41,5 +43,7 @@ namespace Integracje.UI
                 Debug.WriteLine(ex);
             }
         }
+
+        #endregion Methods
     }
 }

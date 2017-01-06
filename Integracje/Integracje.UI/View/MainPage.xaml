@@ -7,7 +7,7 @@
       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1200">
-    
+
     <Grid>
         <Grid x:Name="MainGrid" Margin="4">
             <StackPanel Orientation="Vertical">
@@ -15,7 +15,7 @@
                 <ComboBox Margin="8" SelectedItem="{Binding SelectedProcedure,Mode=TwoWay}" ItemsSource="{Binding Procedures}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}"/>
+                            <TextBlock Text="{Binding Name}" />
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
@@ -32,26 +32,24 @@
 
                 <Grid Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition/>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
                         <Button Margin="8" Command="{Binding SaveCommand}">Zapisz dane</Button>
                         <CheckBox Grid.Column="1" IsChecked="{Binding StyleXml,Mode=TwoWay,FallbackValue=false}" VerticalAlignment="Center">Styluj XML</CheckBox>
                     </Grid>
                     <Grid Grid.Row="1">
-
                     </Grid>
                 </Grid>
-
             </StackPanel>
         </Grid>
         <Grid x:Name="LoadingGrid" Visibility="{Binding IsLoadingState,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}" Background="Black" Opacity="0.5">
-            <controls:ProgressRing Foreground="White" IsActive="{Binding IsLoadingState}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <controls:ProgressRing Foreground="White" IsActive="{Binding IsLoadingState}" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
     </Grid>
 </local:BasePage>

@@ -5,14 +5,6 @@ namespace EntityHelper
 {
     public class Logger
     {
-        #region Fields
-
-        private DateTime dateTime;
-        private string info;
-        private string name;
-
-        #endregion Fields
-
         #region Constructors
 
         public Logger(string info, DateTime dateTime, string name)
@@ -48,6 +40,16 @@ namespace EntityHelper
             }
         }
 
+        #endregion Methods
+
+        #region Fields
+
+        private DateTime dateTime;
+        private string info;
+        private string name;
+
+        #endregion Fields
+
         private void Log()
         {
             using (var db = new DbLogsContext())
@@ -65,7 +67,5 @@ namespace EntityHelper
                 catch { }
             }
         }
-
-        #endregion Methods
     }
 }

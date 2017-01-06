@@ -6,6 +6,15 @@ namespace Integracje.UI.Base
 {
     public class BasePage : Page
     {
+        #region Constructors
+
+        public BasePage()
+        {
+            DataContextChanged += BasePage_DataContextChanged;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public NavigationService Navigator
@@ -20,10 +29,7 @@ namespace Integracje.UI.Base
 
         #endregion Properties
 
-        public BasePage()
-        {
-            DataContextChanged += BasePage_DataContextChanged;
-        }
+        #region Methods
 
         private void BasePage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -33,5 +39,7 @@ namespace Integracje.UI.Base
                 ViewModel.UpdateNavigationService(Navigator);
             }
         }
+
+        #endregion Methods
     }
 }

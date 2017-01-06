@@ -3,7 +3,6 @@ using Integracje.UI.Base;
 using Integracje.UI.Helpers;
 using Integracje.UI.Model;
 using Integracje.UI.SrvBook;
-using Integracje.UI.View;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -24,7 +23,6 @@ namespace Integracje.UI.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
-
         #region Constructors
 
         public MainPageViewModel()
@@ -86,6 +84,7 @@ namespace Integracje.UI.ViewModel
 
         public ResultFromProcedure Result { get; set; }
         public List<Book> ResultBooks { get; set; }
+
         public ICommand SaveCommand
         {
             get
@@ -313,6 +312,7 @@ namespace Integracje.UI.ViewModel
 
             File.WriteAllText(fileName, document);
         }
+
         private string GetXmlFromResult()
         {
             if (StyleXml)
@@ -325,7 +325,6 @@ namespace Integracje.UI.ViewModel
 
                 var styledXml = doc.InnerXml;
                 return styledXml;
-
             }
             return Result.Xml;
         }
@@ -361,6 +360,5 @@ namespace Integracje.UI.ViewModel
         }
 
         #endregion Methods
-
     }
 }
