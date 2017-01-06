@@ -1,8 +1,7 @@
-﻿namespace Integracje.UI.ViewModel
 ﻿using Prism.Mvvm;
 using System.Windows.Navigation;
-using System;
 
+namespace Integracje.UI.Base
 {
     public class BaseViewModel : BindableBase
     {

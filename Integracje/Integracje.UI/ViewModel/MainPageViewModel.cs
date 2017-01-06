@@ -1,7 +1,9 @@
 ﻿using EntityHelper;
+using Integracje.UI.Base;
 using Integracje.UI.Helpers;
 using Integracje.UI.Model;
 using Integracje.UI.SrvBook;
+using Integracje.UI.View;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -184,7 +186,7 @@ namespace Integracje.UI.ViewModel
 
         private bool CanExecuteDownloadCommand()
         {
-            return SelectedProcedure != null ? true : false;
+            return SelectedProcedure != null;
         }
 
         private void ConfigureSaveFileDialog()

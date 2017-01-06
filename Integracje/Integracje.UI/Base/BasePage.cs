@@ -1,9 +1,8 @@
-﻿using Integracje.UI.ViewModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace Integracje.UI.View
+namespace Integracje.UI.Base
 {
     public class BasePage : Page
     {
@@ -13,7 +12,7 @@ namespace Integracje.UI.View
         {
             get
             {
-                return (Application.Current.MainWindow as MainWindow).GetFrame().NavigationService;
+                return (Application.Current.MainWindow as MainWindow).Frame.NavigationService;
             }
         }
 

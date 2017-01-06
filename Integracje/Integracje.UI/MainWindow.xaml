@@ -5,8 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Integracje.UI"
         mc:Ignorable="d" MinHeight="300" MinWidth="400"
-        Title="Integracje - Kacper Sledz" Height="400" Width="450">
-    <Grid>
-        <Frame x:Name="_mainFrame" />
+        Title="Integracje - Kacper Sledz" 
+        Height="400" Width="450">
+
+    <Window.Resources>
+        <Storyboard x:Key="FadeIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="MainGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="RenderTransform.(TranslateTransform.X)" Storyboard.TargetName="MainGrid">
+                <EasingDoubleKeyFrame KeyTime="0" Value="50"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.RenderTransform>
+            <TranslateTransform X="500"/>
+        </Grid.RenderTransform>
+        <Frame x:Name="_mainFrame" Navigating="mainFrame_Navigating" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
