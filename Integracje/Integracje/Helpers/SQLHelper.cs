@@ -6,33 +6,6 @@ namespace Integracje.Helpers
 {
     public class SqlHelper
     {
-        #region Fields
-
-        private const string CONNECTION_STIRNG = "Server=689d6cf8-4bc2-4070-80e2-a6a9012752a8.sqlserver.sequelizer.com;Database=db689d6cf84bc2407080e2a6a9012752a8;User ID=wrntvhhakanzejdt;Password=kXZEpF5EXMvQ4gAfadiPii2YqGY8WWb22PAbFWQuUa6n4JgsFy5goBKb5apPP5Rb;";
-
-        private const string createQuery = "CREATE TABLE[dbo].[Books](" +
-            " [id] [int] NOT NULL, " +
-            " [title] [varchar](250) NOT NULL," +
-            " [pages] [int] not null, " +
-            " [year] [int] not null, " +
-            " [isbn] [varchar](250) NOT NULL ," +
-            " [genre] [varchar](250) NOT NULL ," +
-            " [price] [varchar](250) NOT NULL ," +
-            " [authors_first_name] [varchar](250) NOT NULL ," +
-            " [authors_last_name] [varchar](250) NOT NULL ," +
-            " [fact_based] [int] NOT NULL ," +
-            " [toms_quantity] [int] NOT NULL ," +
-            " [authors_email] [varchar](250) NOT NULL ," +
-            " [authors_gender] [varchar](250) NOT NULL ," +
-            " [original_lanuguage] [varchar](250) NOT NULL ," +
-            " [translated_languages_quantity] [int] NOT NULL " +
-            ")";
-
-        private const string insertQuery = "INSERT INTO [dbo].[Books]([id] ,[title] ,[pages] ,[year],[isbn],[genre] ,[price],[authors_first_name] ,[authors_last_name],[fact_based],[toms_quantity],[authors_email],[authors_gender],[original_lanuguage],[translated_languages_quantity])" +
-            "VALUES( {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14})";
-
-        #endregion Fields
-
         #region Constructors
 
         public SqlHelper()
@@ -142,11 +115,38 @@ namespace Integracje.Helpers
             }
         }
 
+        #endregion Methods
+
+        #region Fields
+
+        private const string CONNECTION_STIRNG = "Server=689d6cf8-4bc2-4070-80e2-a6a9012752a8.sqlserver.sequelizer.com;Database=db689d6cf84bc2407080e2a6a9012752a8;User ID=wrntvhhakanzejdt;Password=kXZEpF5EXMvQ4gAfadiPii2YqGY8WWb22PAbFWQuUa6n4JgsFy5goBKb5apPP5Rb;";
+
+        private const string createQuery = "CREATE TABLE[dbo].[Books](" +
+            " [id] [int] NOT NULL, " +
+            " [title] [varchar](250) NOT NULL," +
+            " [pages] [int] not null, " +
+            " [year] [int] not null, " +
+            " [isbn] [varchar](250) NOT NULL ," +
+            " [genre] [varchar](250) NOT NULL ," +
+            " [price] [varchar](250) NOT NULL ," +
+            " [authors_first_name] [varchar](250) NOT NULL ," +
+            " [authors_last_name] [varchar](250) NOT NULL ," +
+            " [fact_based] [int] NOT NULL ," +
+            " [toms_quantity] [int] NOT NULL ," +
+            " [authors_email] [varchar](250) NOT NULL ," +
+            " [authors_gender] [varchar](250) NOT NULL ," +
+            " [original_lanuguage] [varchar](250) NOT NULL ," +
+            " [translated_languages_quantity] [int] NOT NULL " +
+            ")";
+
+        private const string insertQuery = "INSERT INTO [dbo].[Books]([id] ,[title] ,[pages] ,[year],[isbn],[genre] ,[price],[authors_first_name] ,[authors_last_name],[fact_based],[toms_quantity],[authors_email],[authors_gender],[original_lanuguage],[translated_languages_quantity])" +
+            "VALUES( {0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14})";
+
+        #endregion Fields
+
         private SqlConnection GetConnection()
         {
             return new SqlConnection(CONNECTION_STIRNG);
         }
-
-        #endregion Methods
     }
 }

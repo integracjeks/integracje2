@@ -1,19 +1,27 @@
-﻿using Integracje.UI.ViewModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 
-namespace Integracje.UI.View
+namespace Integracje.UI.Base
 {
     public class BasePage : Page
     {
+        #region Constructors
+
+        public BasePage()
+        {
+            DataContextChanged += BasePage_DataContextChanged;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public NavigationService Navigator
         {
             get
             {
-                return (Application.Current.MainWindow as MainWindow).GetFrame().NavigationService;
+                return (Application.Current.MainWindow as MainWindow).Frame.NavigationService;
             }
         }
 
@@ -21,10 +29,7 @@ namespace Integracje.UI.View
 
         #endregion Properties
 
-        public BasePage()
-        {
-            DataContextChanged += BasePage_DataContextChanged;
-        }
+        #region Methods
 
         private void BasePage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
@@ -34,5 +39,7 @@ namespace Integracje.UI.View
                 ViewModel.UpdateNavigationService(Navigator);
             }
         }
+
+        #endregion Methods
     }
 }

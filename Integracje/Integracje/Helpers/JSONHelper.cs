@@ -8,12 +8,6 @@ namespace Integracje.Helpers
 {
     internal class JSONHelper
     {
-        #region Fields
-
-        private const string fileName = "MOCK_DATA.json";
-
-        #endregion Fields
-
         #region Constructors
 
         public JSONHelper()
@@ -30,5 +24,11 @@ namespace Integracje.Helpers
         public List<Book> BookList { get; private set; }
 
         #endregion Properties
+
+        #region Fields
+
+        private const string fileName = "MOCK_DATA.json";
+
+        #endregion Fields
     }
 }

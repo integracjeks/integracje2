@@ -1,5 +1,7 @@
 ﻿namespace Integracje.Model
 {
+#pragma warning disable S100 // Methods and properties should be named in camel case
+
     public class Book
     {
         #region Properties
@@ -22,4 +24,6 @@
 
         #endregion Properties
     }
+
+#pragma warning restore S100 // Methods and properties should be named in camel case
 }

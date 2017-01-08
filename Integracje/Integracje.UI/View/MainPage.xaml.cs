@@ -1,4 +1,5 @@
-﻿using Integracje.UI.ViewModel;
+﻿using Integracje.UI.Base;
+using Integracje.UI.ViewModel;
 
 namespace Integracje.UI.View
 {

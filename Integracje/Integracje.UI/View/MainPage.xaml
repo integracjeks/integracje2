@@ -3,11 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:Integracje.UI.View"
+      xmlns:local="clr-namespace:Integracje.UI.Base"
+      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       mc:Ignorable="d"
       d:DesignHeight="600" d:DesignWidth="1200">
+
     <Grid>
-        <Grid Margin="4">
+        <Grid x:Name="MainGrid" Margin="4">
             <StackPanel Orientation="Vertical">
                 <TextBlock Margin="8">Wybierz procedurę</TextBlock>
                 <ComboBox Margin="8" SelectedItem="{Binding SelectedProcedure,Mode=TwoWay}" ItemsSource="{Binding Procedures}">
@@ -26,9 +28,149 @@
                     <TextBox Margin="8" Grid.Column="1" HorizontalAlignment="Stretch" Text="{Binding ParameterTextBox,Mode=TwoWay}" />
                 </Grid>
 
-                <Button Margin="8" Command="{Binding DownloadCommand}">Pobierz dane</Button>
-                <Button Margin="8" Command="{Binding SaveCommand}" Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">Zapisz dane</Button>
+                <Button Margin="8"  Padding="4" Command="{Binding DownloadCommand}">Pobierz dane</Button>
+
+                <Grid Visibility="{Binding IsSaveButtonVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="8"  Padding="4" Command="{Binding SaveCommand}">Zapisz dane</Button>
+                        <CheckBox Grid.Column="1" IsChecked="{Binding StyleXml,Mode=TwoWay,FallbackValue=false}" VerticalAlignment="Center">Styluj XML</CheckBox>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                    </Grid>
+                </Grid>
             </StackPanel>
+        </Grid>
+        <Grid x:Name="LoadingGrid" Visibility="{Binding IsLoadingState,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}" Background="Black" Opacity="0.5">
+            <controls:ProgressRing Foreground="White" IsActive="{Binding IsLoadingState}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+        <Grid Margin="4" Background="White" Visibility="{Binding IsCustomizePanelVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock VerticalAlignment="Center" Margin="8">Wybierz styl</TextBlock>
+                <Button Margin="8" Padding="4" Grid.Column="1" Command="{Binding SaveAndCloseCustomizePanel}" >Zapisz</Button>
+            </Grid>
+
+            <TabControl Grid.Row="1" SelectedIndex="{Binding TabIndex,Mode=TwoWay}" ItemsSource="{Binding StyleSource}" VerticalAlignment="Stretch">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding TemplateName}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Kolor podświetlenia wiersza</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedRowColor,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Kolor podświetlenia komórki</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedCellColor,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Rozmiar czcionki</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding SelectedFontSize,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Wyrównanie tekstu</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding TextAligns}" SelectedItem="{Binding SelectedTextAlign,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Pochylony tekst w kolumnie</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ItalicTables}" SelectedItem="{Binding SelectedItalicTable,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Tło dokumentu</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedDocumentColor,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Tło tabeli</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedTableColor,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Pobrubiony tekst nagłówka</TextBlock>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding BoldHeader,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Grubość tabeli</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding BorderSizes}" SelectedItem="{Binding SelectedBorderSize,Mode=TwoWay}" />
+                                </Grid>
+
+                                <Grid Margin="8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock>Kolor ramki</TextBlock>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedBorderColor,Mode=TwoWay}" />
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
         </Grid>
     </Grid>
 </local:BasePage>

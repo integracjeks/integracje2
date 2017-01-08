@@ -1,16 +1,23 @@
 ﻿using EntityHelper;
+using Integracje.UI.Base;
 using Integracje.UI.Helpers;
 using Integracje.UI.Model;
 using Integracje.UI.SrvBook;
+using Integracje.UI.Style;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Xml;
 using System.Xml.Serialization;
 using YamlDotNet.Serialization;
 using Procedure = Integracje.UI.SrvBook.Procedure;
@@ -19,23 +26,15 @@ namespace Integracje.UI.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
-        #region Fields
-
-        private ICommand m_DownloadCommand;
-        private bool m_IsSaveButtonVisible;
-        private string m_OutputTextBox;
-        private string m_ParameterTextBox;
-        private ObservableCollection<Procedure> m_Procedures;
-        private ICommand m_SaveCommand;
-        private SaveFileDialog m_SaveFileDialog;
-        private Procedure m_SelectedProcedure;
-
-        #endregion Fields
-
         #region Constructors
 
         public MainPageViewModel()
         {
+            InitializeStyles();
+            mmStyleSource = new List<StyleTemplate> { style1, style2, style3 };
+            StyleSource = new List<StyleTemplate>(mmStyleSource);
+            TabIndex = 0;
+
             Procedures = new ObservableCollection<Procedure>
             {
                 new Procedure {Name= "GetAllBooks",HasParameter=false},
@@ -55,13 +54,40 @@ namespace Integracje.UI.ViewModel
 
         #region Properties
 
+        public int TabIndex
+        {
+            get
+            {
+                return m_TabIndex;
+            }
+            set
+            {
+                SetProperty(ref m_TabIndex, value);
+            }
+        }
+
+        public ICommand SaveAndCloseCustomizePanel
+        {
+            get
+            {
+                if (m_SaveAndCloseCustomizePanel == null)
+                {
+                    m_SaveAndCloseCustomizePanel = new DelegateCommand(() =>
+                    {
+                        IsCustomizePanelVisible = false;
+                    });
+                }
+                return m_SaveAndCloseCustomizePanel;
+            }
+        }
+
         public ICommand DownloadCommand
         {
             get
             {
                 if (m_DownloadCommand == null)
                 {
-                    m_DownloadCommand = new DelegateCommand(ExecuteSelectedProcedure, CanExecuteDownloadCommand);
+                    m_DownloadCommand = new DelegateCommand(async () => await ExecuteSelectedProcedure(), CanExecuteDownloadCommand);
                 }
                 return m_DownloadCommand;
             }
@@ -92,7 +118,6 @@ namespace Integracje.UI.ViewModel
         }
 
         public ResultFromProcedure Result { get; set; }
-
         public List<Book> ResultBooks { get; set; }
 
         public ICommand SaveCommand
@@ -118,9 +143,156 @@ namespace Integracje.UI.ViewModel
             }
         }
 
+        public bool StyleXml
+        {
+            get
+            {
+                return m_StyleXml;
+            }
+
+            set
+            {
+                SetProperty(ref m_StyleXml, value);
+
+                if (StyleXml)
+                {
+                    IsCustomizePanelVisible = true;
+                }
+                Debug.WriteLine($"---------- StyleXml: {StyleXml}");
+            }
+        }
+
+        public bool IsLoadingState
+        {
+            get { return m_IsLoadingState; }
+            set
+            {
+                SetProperty(ref m_IsLoadingState, value);
+            }
+        }
+
+        public bool IsCustomizePanelVisible
+        {
+            get { return m_IsCustomizePanelVisible; }
+            set { SetProperty(ref m_IsCustomizePanelVisible, value); }
+        }
+
+        public List<StyleTemplate> StyleSource
+        {
+            get { return m_StyleSource; }
+            set { SetProperty(ref m_StyleSource, value); }
+        }
+
         #endregion Properties
 
+        #region Fields
+
+        private readonly List<int> fontSizes = new List<int> { 10, 12, 14, 16, 18 };
+        private readonly List<TextAlign> textAligns = new List<TextAlign> { TextAlign.left, TextAlign.center, TextAlign.right };
+        private readonly List<Color> colorList = new List<Color> { Color.LightBlue, Color.LightCoral, Color.LightGray, Color.Lime, Color.LimeGreen, Color.DeepPink, Color.Gray, Color.Brown, Color.Aqua, Color.Red, Color.Blue, Color.Green, Color.Magenta, Color.DeepSkyBlue };
+        private readonly List<ItalicTable> italicTable = new List<ItalicTable> { ItalicTable.none, ItalicTable.id, ItalicTable.pages, ItalicTable.year, ItalicTable.title };
+        private readonly List<int> borderSize = new List<int> { 1, 2, 3 };
+
+        private readonly IEnumerable<StyleTemplate> mmStyleSource;
+
+        private StyleTemplate style1;
+
+        private StyleTemplate style2;
+
+        private StyleTemplate style3;
+
+        private int m_TabIndex;
+
+        private ICommand m_SaveAndCloseCustomizePanel;
+
+        private bool m_StyleXml;
+
+        private ICommand m_DownloadCommand;
+
+        private bool m_IsSaveButtonVisible;
+
+        private string m_OutputTextBox;
+
+        private string m_ParameterTextBox;
+
+        private ObservableCollection<Procedure> m_Procedures;
+
+        private ICommand m_SaveCommand;
+
+        private SaveFileDialog m_SaveFileDialog;
+
+        private Procedure m_SelectedProcedure;
+
+        private bool m_IsLoadingState;
+
+        private bool m_IsCustomizePanelVisible;
+
+        private List<StyleTemplate> m_StyleSource;
+
+        #endregion Fields
+
         #region Methods
+
+        private void InitializeStyles()
+        {
+            style1 = new StyleTemplate
+            {
+                TemplateName = "Styl 1",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[0],
+                SelectedCellColor = colorList[1],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes.FirstOrDefault(),
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[0],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[0],
+                SelectedDocumentColor = colorList[6],
+                SelectedTableColor = colorList[7],
+                BoldHeader = true,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[2],
+                SelectedBorderColor = colorList[4]
+            };
+            style2 = new StyleTemplate
+            {
+                TemplateName = "Styl 2",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[2],
+                SelectedCellColor = colorList[3],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes[1],
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[1],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[1],
+                SelectedDocumentColor = colorList[8],
+                SelectedTableColor = colorList[9],
+                BoldHeader = false,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[1],
+                SelectedBorderColor = colorList[7]
+            };
+            style3 = new StyleTemplate
+            {
+                TemplateName = "Styl 3",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[4],
+                SelectedCellColor = colorList[5],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes[3],
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[2],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[2],
+                SelectedDocumentColor = colorList[10],
+                SelectedTableColor = colorList[11],
+                BoldHeader = false,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[2],
+                SelectedBorderColor = colorList[1]
+            };
+        }
 
         private void AnalyzeIfError()
         {
@@ -166,7 +338,7 @@ namespace Integracje.UI.ViewModel
 
         private bool CanExecuteDownloadCommand()
         {
-            return SelectedProcedure != null ? true : false;
+            return SelectedProcedure != null;
         }
 
         private void ConfigureSaveFileDialog()
@@ -199,26 +371,30 @@ namespace Integracje.UI.ViewModel
             }
         }
 
-        private void ExecuteSelectedProcedure()
+        private async Task ExecuteSelectedProcedure()
         {
+            IsLoadingState = true;
+            StyleXml = false;
             IsSaveButtonVisible = false;
             ConfigureSaveFileDialog();
-            try
+            var task = Task.Factory.StartNew(() =>
             {
-                SelectedProcedure.Parameter = ParameterTextBox;
-
-                var ws = new BookService();
-                var resultJson = ws.GetResultFromProcedure(SelectedProcedure);
-
-                Result = JsonConvert.DeserializeObject<ResultFromProcedure>(resultJson);
-
-                AnalyzeResult();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
-                OutputTextBox = e.Message;
-            }
+                try
+                {
+                    SelectedProcedure.Parameter = ParameterTextBox;
+                    var ws = new BookService();
+                    var resultJson = ws.GetResultFromProcedure(SelectedProcedure);
+                    Result = JsonConvert.DeserializeObject<ResultFromProcedure>(resultJson);
+                    AnalyzeResult();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    OutputTextBox = e.Message;
+                }
+            });
+            await task;
+            IsLoadingState = false;
         }
 
         private string GetJsonFromResult()
@@ -275,11 +451,37 @@ namespace Integracje.UI.ViewModel
                     break;
 
                 default:
-                    document = Result.Xml;
+                    document = GetXmlFromResult();
+                    if (StyleXml)
+                    {
+                        var cssfilename = fileName.Substring(0, fileName.Length - 3) + "css";
+                        File.WriteAllText(cssfilename, StyleSource[TabIndex].GenerateCssString());
+                    }
                     break;
             }
 
             File.WriteAllText(fileName, document);
+        }
+
+        private string GetXmlFromResult()
+        {
+            if (StyleXml)
+            {
+                var doc = new XmlDocument();
+                doc.LoadXml(Result.Xml);
+                doc.AppendChild(doc.CreateProcessingInstruction(
+                    "xml-stylesheet",
+                    "type='text/css' href='Result.css'"));
+
+                var node = doc.CreateNode("element", "Book", "");
+                node.InnerXml = "<id class='nagl'>id</id><title class='nagl'>title</title><pages class='nagl'>pages</pages><year class='nagl'>year</year><isbn class='nagl'>isbn</isbn><genre class='nagl'>genre</genre><price class='nagl'>price</price><authors_first_name class='nagl'>name</authors_first_name><authors_last_name class='nagl'>last name</authors_last_name><fact_based class='nagl'>fact based</fact_based><toms_quantity class='nagl'>toms quantity</toms_quantity><authors_email class='nagl'>authors email</authors_email><authors_gender class='nagl'>authors gender</authors_gender><original_lanuguage class='nagl'>original language</original_lanuguage><translated_languages_quantity class='nagl'>translated languages quantity</translated_languages_quantity>";
+
+                doc.FirstChild.InsertBefore(node, doc.FirstChild.FirstChild);
+
+                var styledXml = doc.InnerXml;
+                return styledXml;
+            }
+            return Result.Xml;
         }
 
         private void Sfd_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
