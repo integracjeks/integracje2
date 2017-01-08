@@ -22,87 +22,10 @@ using System.Xml.Serialization;
 using YamlDotNet.Serialization;
 using Procedure = Integracje.UI.SrvBook.Procedure;
 
-
-
 namespace Integracje.UI.ViewModel
 {
-
-
     public class MainPageViewModel : BaseViewModel
     {
-        readonly List<int> fontSizes = new List<int> { 10, 12, 14, 16, 18 };
-        readonly List<TextAlign> textAligns = new List<TextAlign> { TextAlign.left, TextAlign.center, TextAlign.right };
-        readonly List<Color> colorList = new List<Color> { Color.LightBlue, Color.LightCoral, Color.LightGray, Color.Lime, Color.LimeGreen, Color.DeepPink, Color.Gray, Color.Brown, Color.Aqua, Color.Red, Color.Blue, Color.Green, Color.Magenta, Color.DeepSkyBlue };
-        readonly List<ItalicTable> italicTable = new List<ItalicTable> { ItalicTable.none, ItalicTable.id, ItalicTable.pages, ItalicTable.year, ItalicTable.title };
-        readonly List<int> borderSize = new List<int> { 1, 2, 3 };
-
-        private void InitializeStyles()
-        {
-            style1 = new StyleTemplate
-            {
-                TemplateName = "Styl 1",
-                ColorsList = colorList,
-                SelectedRowColor = colorList[0],
-                SelectedCellColor = colorList[1],
-                FontSizes = fontSizes,
-                SelectedFontSize = fontSizes.FirstOrDefault(),
-                TextAligns = textAligns,
-                SelectedTextAlign = textAligns[0],
-                ItalicTables = italicTable,
-                SelectedItalicTable = italicTable[0],
-                SelectedDocumentColor = colorList[6],
-                SelectedTableColor = colorList[7],
-                BoldHeader = true,
-                BorderSizes = borderSize,
-                SelectedBorderSize = borderSize[2],
-                SelectedBorderColor = colorList[4]
-            };
-            style2 = new StyleTemplate
-            {
-                TemplateName = "Styl 2",
-                ColorsList = colorList,
-                SelectedRowColor = colorList[2],
-                SelectedCellColor = colorList[3],
-                FontSizes = fontSizes,
-                SelectedFontSize = fontSizes[1],
-                TextAligns = textAligns,
-                SelectedTextAlign = textAligns[1],
-                ItalicTables = italicTable,
-                SelectedItalicTable = italicTable[1],
-                SelectedDocumentColor = colorList[8],
-                SelectedTableColor = colorList[9],
-                BoldHeader = false,
-                BorderSizes = borderSize,
-                SelectedBorderSize = borderSize[1],
-                SelectedBorderColor = colorList[7]
-            };
-            style3 = new StyleTemplate
-            {
-                TemplateName = "Styl 3",
-                ColorsList = colorList,
-                SelectedRowColor = colorList[4],
-                SelectedCellColor = colorList[5],
-                FontSizes = fontSizes,
-                SelectedFontSize = fontSizes[3],
-                TextAligns = textAligns,
-                SelectedTextAlign = textAligns[2],
-                ItalicTables = italicTable,
-                SelectedItalicTable = italicTable[2],
-                SelectedDocumentColor = colorList[10],
-                SelectedTableColor = colorList[11],
-                BoldHeader = false,
-                BorderSizes = borderSize,
-                SelectedBorderSize = borderSize[2],
-                SelectedBorderColor = colorList[1]
-            };
-        }
-
-
-        private StyleTemplate style1;
-        private StyleTemplate style2;
-        private StyleTemplate style3;
-        readonly IEnumerable<StyleTemplate> mmStyleSource;
-
         #region Constructors
 
         public MainPageViewModel()
@@ -127,7 +50,9 @@ namespace Integracje.UI.ViewModel
             };
         }
 
-        private int m_TabIndex;
+        #endregion Constructors
+
+        #region Properties
 
         public int TabIndex
         {
@@ -140,15 +65,6 @@ namespace Integracje.UI.ViewModel
                 SetProperty(ref m_TabIndex, value);
             }
         }
-
-
-
-
-        #endregion Constructors
-
-        #region Properties
-
-        private ICommand m_SaveAndCloseCustomizePanel;
 
         public ICommand SaveAndCloseCustomizePanel
         {
@@ -255,24 +171,128 @@ namespace Integracje.UI.ViewModel
             }
         }
 
+        public bool IsCustomizePanelVisible
+        {
+            get { return m_IsCustomizePanelVisible; }
+            set { SetProperty(ref m_IsCustomizePanelVisible, value); }
+        }
+
+        public List<StyleTemplate> StyleSource
+        {
+            get { return m_StyleSource; }
+            set { SetProperty(ref m_StyleSource, value); }
+        }
+
         #endregion Properties
 
         #region Fields
 
+        private readonly List<int> fontSizes = new List<int> { 10, 12, 14, 16, 18 };
+        private readonly List<TextAlign> textAligns = new List<TextAlign> { TextAlign.left, TextAlign.center, TextAlign.right };
+        private readonly List<Color> colorList = new List<Color> { Color.LightBlue, Color.LightCoral, Color.LightGray, Color.Lime, Color.LimeGreen, Color.DeepPink, Color.Gray, Color.Brown, Color.Aqua, Color.Red, Color.Blue, Color.Green, Color.Magenta, Color.DeepSkyBlue };
+        private readonly List<ItalicTable> italicTable = new List<ItalicTable> { ItalicTable.none, ItalicTable.id, ItalicTable.pages, ItalicTable.year, ItalicTable.title };
+        private readonly List<int> borderSize = new List<int> { 1, 2, 3 };
+
+        private readonly IEnumerable<StyleTemplate> mmStyleSource;
+
+        private StyleTemplate style1;
+
+        private StyleTemplate style2;
+
+        private StyleTemplate style3;
+
+        private int m_TabIndex;
+
+        private ICommand m_SaveAndCloseCustomizePanel;
+
         private bool m_StyleXml;
+
         private ICommand m_DownloadCommand;
+
         private bool m_IsSaveButtonVisible;
+
         private string m_OutputTextBox;
+
         private string m_ParameterTextBox;
+
         private ObservableCollection<Procedure> m_Procedures;
+
         private ICommand m_SaveCommand;
+
         private SaveFileDialog m_SaveFileDialog;
+
         private Procedure m_SelectedProcedure;
+
         private bool m_IsLoadingState;
+
+        private bool m_IsCustomizePanelVisible;
+
+        private List<StyleTemplate> m_StyleSource;
 
         #endregion Fields
 
         #region Methods
+
+        private void InitializeStyles()
+        {
+            style1 = new StyleTemplate
+            {
+                TemplateName = "Styl 1",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[0],
+                SelectedCellColor = colorList[1],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes.FirstOrDefault(),
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[0],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[0],
+                SelectedDocumentColor = colorList[6],
+                SelectedTableColor = colorList[7],
+                BoldHeader = true,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[2],
+                SelectedBorderColor = colorList[4]
+            };
+            style2 = new StyleTemplate
+            {
+                TemplateName = "Styl 2",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[2],
+                SelectedCellColor = colorList[3],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes[1],
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[1],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[1],
+                SelectedDocumentColor = colorList[8],
+                SelectedTableColor = colorList[9],
+                BoldHeader = false,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[1],
+                SelectedBorderColor = colorList[7]
+            };
+            style3 = new StyleTemplate
+            {
+                TemplateName = "Styl 3",
+                ColorsList = colorList,
+                SelectedRowColor = colorList[4],
+                SelectedCellColor = colorList[5],
+                FontSizes = fontSizes,
+                SelectedFontSize = fontSizes[3],
+                TextAligns = textAligns,
+                SelectedTextAlign = textAligns[2],
+                ItalicTables = italicTable,
+                SelectedItalicTable = italicTable[2],
+                SelectedDocumentColor = colorList[10],
+                SelectedTableColor = colorList[11],
+                BoldHeader = false,
+                BorderSizes = borderSize,
+                SelectedBorderSize = borderSize[2],
+                SelectedBorderColor = colorList[1]
+            };
+        }
 
         private void AnalyzeIfError()
         {
@@ -350,15 +370,6 @@ namespace Integracje.UI.ViewModel
                 //
             }
         }
-
-        private bool m_IsCustomizePanelVisible;
-
-        public bool IsCustomizePanelVisible
-        {
-            get { return m_IsCustomizePanelVisible; }
-            set { SetProperty(ref m_IsCustomizePanelVisible, value); }
-        }
-
 
         private async Task ExecuteSelectedProcedure()
         {
@@ -452,15 +463,6 @@ namespace Integracje.UI.ViewModel
             File.WriteAllText(fileName, document);
         }
 
-        private List<StyleTemplate> m_StyleSource;
-
-        public List<StyleTemplate> StyleSource
-        {
-            get { return m_StyleSource; }
-            set { SetProperty(ref m_StyleSource, value); }
-        }
-
-
         private string GetXmlFromResult()
         {
             if (StyleXml)
@@ -513,6 +515,5 @@ namespace Integracje.UI.ViewModel
         }
 
         #endregion Methods
-
     }
 }

@@ -54,14 +54,14 @@
 
         <Grid Margin="4" Background="White" Visibility="{Binding IsCustomizePanelVisible,FallbackValue=Collapsed,Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition/>
+                <RowDefinition Height="auto" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
                 <TextBlock VerticalAlignment="Center" Margin="8">Wybierz styl</TextBlock>
                 <Button Margin="8" Padding="4" Grid.Column="1" Command="{Binding SaveAndCloseCustomizePanel}" >Zapisz</Button>
@@ -70,104 +70,102 @@
             <TabControl Grid.Row="1" SelectedIndex="{Binding TabIndex,Mode=TwoWay}" ItemsSource="{Binding StyleSource}" VerticalAlignment="Stretch">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding TemplateName}"/>
+                        <TextBlock Text="{Binding TemplateName}" />
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
                     <DataTemplate>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <StackPanel>     
+                            <StackPanel>
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Kolor podświetlenia wiersza</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedRowColor,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedRowColor,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Kolor podświetlenia komórki</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedCellColor,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedCellColor,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Rozmiar czcionki</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding SelectedFontSize,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding FontSizes}" SelectedItem="{Binding SelectedFontSize,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Wyrównanie tekstu</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding TextAligns}" SelectedItem="{Binding SelectedTextAlign,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding TextAligns}" SelectedItem="{Binding SelectedTextAlign,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Pochylony tekst w kolumnie</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ItalicTables}" SelectedItem="{Binding SelectedItalicTable,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ItalicTables}" SelectedItem="{Binding SelectedItalicTable,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Tło dokumentu</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedDocumentColor,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedDocumentColor,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Tło tabeli</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedTableColor,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedTableColor,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Pobrubiony tekst nagłówka</TextBlock>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding BoldHeader,Mode=TwoWay}"/>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding BoldHeader,Mode=TwoWay}" />
                                 </Grid>
-
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Grubość tabeli</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding BorderSizes}" SelectedItem="{Binding SelectedBorderSize,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding BorderSizes}" SelectedItem="{Binding SelectedBorderSize,Mode=TwoWay}" />
                                 </Grid>
 
                                 <Grid Margin="8">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition/>
-                                        <ColumnDefinition/>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock>Kolor ramki</TextBlock>
-                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedBorderColor,Mode=TwoWay}"/>
+                                    <ComboBox Grid.Column="1" ItemsSource="{Binding ColorsList}" SelectedItem="{Binding SelectedBorderColor,Mode=TwoWay}" />
                                 </Grid>
-                                
                             </StackPanel>
                         </ScrollViewer>
                     </DataTemplate>
