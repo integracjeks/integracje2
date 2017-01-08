@@ -78,7 +78,6 @@ namespace Integracje.UI.Style
 
         private string Prep(Color c)
         {
-            // background: rgba(128,128,128,1);
             return $"rgba({c.R},{c.G},{c.B},1)";
         }
 
