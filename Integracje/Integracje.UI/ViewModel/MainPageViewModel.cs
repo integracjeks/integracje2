@@ -26,6 +26,8 @@ namespace Integracje.UI.ViewModel
 {
     public class MainPageViewModel : BaseViewModel
     {
+        //test
+
         #region Constructors
 
         public MainPageViewModel()
